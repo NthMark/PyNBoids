@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from math import pi, sin, cos, atan2, radians, degrees
+from math import sin, cos, atan2, radians, degrees
 from random import randint
 import pygame as pg
 
