@@ -3,11 +3,6 @@ from math import sin, cos, atan2, radians, degrees
 from random import randint
 import pygame as pg
 
-'''
-PyNBoids - a Boids simulation - github.com/Nikorasu/PyNBoids
-This version uses a spatial partitioning grid to improve performance.
-Copyright (c) 2021  Nikolaus Stromberg  nikorasu85@gmail.com
-'''
 FLLSCRN = True          # True for Fullscreen, or False for Window
 BOIDZ = 200             # How many boids to spawn, too many may slow fps
 WRAP = False            # False avoids edges, True wraps to other side
@@ -177,5 +172,5 @@ def main():
         pg.display.update()
 
 if __name__ == '__main__':
-    main()  # by Nik
+    main()  
     pg.quit()

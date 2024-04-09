@@ -3,10 +3,7 @@ from pynboids import Boid
 from random import randint
 from math import cos
 import pygame as pg
-'''
-Boid Import Example, Fish Tank Scene.
-Copyright (c) 2021  Nikolaus Stromberg
-'''
+
 BPL = 42                # How many boids per layer
 FLLSCRN = True          # True for Fullscreen, or False for Window.
 WRAP = False            # False avoids edges, True wraps boids to other side.
