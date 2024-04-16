@@ -2,9 +2,10 @@
 from math import sin, cos, atan2, radians, degrees
 from random import randint
 import pygame as pg
-
-FLLSCRN = True          # True for Fullscreen, or False for Window
-BOIDZ = 200             # How many boids to spawn, too many may slow fps
+import os
+from pygame_screen_record.ScreenRecorder import ScreenRecorder
+FLLSCRN = False          # True for Fullscreen, or False for Window
+BOIDZ = 8             # How many boids to spawn, too many may slow fps
 WRAP = False            # False avoids edges, True wraps to other side
 FISH = False            # True to turn boids into fish
 SPEED = 150             # Movement speed
@@ -133,7 +134,8 @@ class BoidGrid():  # tracks boids in spatial partition grid
                     nearby += self.dict.get((key[0] + x, key[1] + y), [])
             nearby.remove(boid)
         return nearby
-
+    def make_mp4(self):
+        os.system("ffmpeg -r 30 -i pngs\\capture%08d.png -vcodec mpeg4 -q:v 0 -y videos\\boids.mp4")
 
 def main():
     pg.init()  # prepare window
@@ -154,23 +156,28 @@ def main():
 
     if SHOWFPS : font = pg.font.Font(None, 30)
     clock = pg.time.Clock()
-
+    recorder = ScreenRecorder(60) # Pass your desired fps
+    recorder.start_rec() # Start recording
     # main loop
-    while True:
-        for e in pg.event.get():
-            if e.type == pg.QUIT or e.type == pg.KEYDOWN and (e.key == pg.K_ESCAPE or e.key == pg.K_q or e.key==pg.K_SPACE):
-                return
+    try:
+        while True:
+            for e in pg.event.get():
+                if e.type == pg.QUIT or e.type == pg.KEYDOWN and (e.key == pg.K_ESCAPE or e.key == pg.K_q or e.key==pg.K_SPACE):
+                    return
 
-        dt = clock.tick(FPS) / 1000
-        screen.fill(BGCOLOR)
-        # update boid logic, then draw them
-        nBoids.update(dt, SPEED, WRAP)
-        nBoids.draw(screen)
-        # if true, displays the fps in the upper left corner, for debugging
-        if SHOWFPS : screen.blit(font.render(str(int(clock.get_fps())), True, [0,200,0]), (8, 8))
+            dt = clock.tick(FPS) / 1000
+            screen.fill(BGCOLOR)
+            # update boid logic, then draw them
+            nBoids.update(dt, SPEED, WRAP)
+            nBoids.draw(screen)
+            # if true, displays the fps in the upper left corner, for debugging
+            if SHOWFPS : screen.blit(font.render(str(int(clock.get_fps())), True, [0,200,0]), (8, 8))
 
-        pg.display.update()
-
+            pg.display.update()
+    finally:
+        recorder.stop_rec().get_single_recording().save(("boids","mp4"))
+        pg.quit()
 if __name__ == '__main__':
+    
     main()  
-    pg.quit()
+    
